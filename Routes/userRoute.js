@@ -4,7 +4,7 @@ import { getUsers,createUser,deleteUser,editUser } from '../Controllers/UserCont
 const userRouter = express.Router()
 
 
-userRouter.route('').get(getUsers).post(createUser)
+userRouter.route('/').get(getUsers).post(createUser)
 userRouter.route('/:id').put(editUser).delete(deleteUser)
 
 

@@ -4,12 +4,14 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "start": "nodemon app.js"
+    "start:dev": "NODE_ENV=development  nodemon app.js",
+    "start:prod": "NODE_ENV=production  nodemon app.js"
   },
   "author": "Nika Qanashvili",
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "morgan": "^1.10.0"
   }
