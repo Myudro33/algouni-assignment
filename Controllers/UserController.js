@@ -22,10 +22,14 @@ const createUser = (req,res)=>{
     }
 
 const editUser = (req,res)=>{
-    res.json({
-        message:"you get all users",
-        data:'users'
-    })
+    const userIndex = data.findIndex(user=>user.id===parseInt(req.params.id))
+    const updatedUser = {...data[userIndex],...req.body}
+         data.push(updatedUser)
+        fs.writeFileSync('./data/users.json',JSON.stringify(data))
+        res.json({
+            message:"user updated",
+            data:updatedUser
+        })
 }
 const deleteUser = (req,res)=>{
     res.json({
