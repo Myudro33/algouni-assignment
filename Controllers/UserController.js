@@ -18,6 +18,7 @@ const createUser = (req,res)=>{
         fs.writeFileSync('./data/users.json',JSON.stringify(data))
         res.json({
             message:"new user is created",
+            data: newUser
         })
     }
 
@@ -32,9 +33,10 @@ const editUser = (req,res)=>{
         })
 }
 const deleteUser = (req,res)=>{
+    const filteredUser = data.filter(user=>user.id!==parseInt(req.params.id))
+    fs.writeFileSync('./data/users.json',JSON.stringify(filteredUser))
     res.json({
-        message:"you get all users",
-        data:'users'
+        message:"user deleted",
     })
 }
 
