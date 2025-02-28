@@ -21,7 +21,4 @@ if(process.env.NODE_ENV==='development'){
 app.use('/products',productRouter)
 app.use('/users',userRouter)
 
-
-
-
-app.listen(process.env.PORT)
+export default app
