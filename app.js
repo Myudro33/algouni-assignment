@@ -1,10 +1,10 @@
 import express from 'express'
 import morgan from 'morgan';
-import productRouter from './Routes/productRoute.js';
-import userRouter from './Routes/userRoute.js';
+import productRouter from './routes/productRoute.js';
+import userRouter from './routes/userRoute.js';
 import dotenv from 'dotenv'
-import maintenanceMiddleware from './Middlewares/MaintenanceMiddleware.js';
-import globalRateLimiter from './Middlewares/RequestLimitMiddleware.js';
+import maintenanceMiddleware from './middlewares/MaintenanceMiddleware.js';
+import globalRateLimiter from './middlewares/RequestLimitMiddleware.js';
 
 dotenv.config({path:"./config.env"})
 

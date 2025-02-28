@@ -1,6 +1,6 @@
 import express from 'express'
-import { getProducts,updateProduct,deleteProduct,buyProduct,createProduct } from '../Controllers/ProductController.js';
-import SlugifyMiddleware from '../Middlewares/SlugifyMiddleware.js'
+import { getProducts,updateProduct,deleteProduct,buyProduct,createProduct } from '../controllers/ProductController.js';
+import SlugifyMiddleware from '../middlewares/SlugifyMiddleware.js'
 
 
 const productRouter = express.Router()
