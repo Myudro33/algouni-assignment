@@ -1,9 +1,6 @@
 import slugify from "slugify";
 const productMiddleware = (req, res, next) => {
-    if (req.method === "POST" && req.path === "/products") {
-
-        req.body.name = slugify(req.body.name)
-    }
+        req.body.slug = slugify(req.body.name,{lower:true})
     next(); 
 };
 
