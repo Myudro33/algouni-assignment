@@ -58,21 +58,23 @@ const deleteProduct =async(req, res) => {
         res.status(500).json({message:'server error',error:err.message})
     }
 };
-const buyProduct = (req, res) => {
-  const productId = parseInt(req.params.id);
-  const productIndex = data.findIndex((product) => product.id === productId);
-  if (data[productIndex].stock < 1) {
-    res.status(406).send({ message: "stock is 0" });
-  }
-  data[productIndex] = {
-    ...data[productIndex],
-    stock: data[productIndex].stock - 1,
-  };
-  fs.writeFileSync("./data/data.json", JSON.stringify(data));
-  res.json({
-    message: "you bought that product",
-    data: data[productIndex],
-  });
+const buyProduct = async (req, res) => {
+    try{
+        const product = Product.findById(req.params.id)
+        if(!product){
+            return res.status(404).json({message:"product doesn't exists"})
+        }
+        if(product.stock<1){
+            return res.status(400).json({message:'Product is out of stock'})
+        }
+        const updatedProduct = await Product.findByIdAndUpdate(req.params.id,
+            {$inc:{stock:-1}},
+            {new:true}
+        )
+        res.status(200).json({ message: "You bought this product successfully", data: updatedProduct });
+    }catch(err){
+        res.status(500).json({message:'server error',error:err.message})
+    }
 };
 
 export { getProducts, buyProduct, createProduct, deleteProduct, updateProduct };
