@@ -28,15 +28,13 @@ const createUser =async (req,res)=>{
     res.json({message:'User created',data:newUser})
 }
 
-const editUser = (req,res)=>{
-    const userIndex = data.findIndex(user=>user.id===parseInt(req.params.id))
-    const updatedUser = {...data[userIndex],...req.body}
-         data.push(updatedUser)
-        fs.writeFileSync('./data/users.json',JSON.stringify(data))
-        res.json({
-            message:"user updated",
-            data:updatedUser
-        })
+const editUser =async (req,res)=>{
+    const existingUser = User.findById(req.params.id)
+    if(!existingUser){
+        return res.status(400).json({message:"user doesn't exist"})
+    }
+    const user = await User.findByIdAndUpdate(req.params.id,{...req.body},{new:true})
+    res.json({message:"User updated",data:user})
 }
 const deleteUser = (req,res)=>{
     const filteredUser = data.filter(user=>user.id!==parseInt(req.params.id))
