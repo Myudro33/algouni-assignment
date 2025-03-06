@@ -1,1 +1,46 @@
-[{"name":"test","price":2000,"id":1740584158088,"createdAt":"2025-02-26T15:35:58.088Z"},{"name":"test111","price":2000,"id":1740584478310,"createdAt":"2025-02-26T15:41:18.310Z"},{"name":"test1111","price":2000,"id":1740584534347,"createdAt":"2025-02-26T15:42:14.347Z"},{"name":"test123321","price":2000,"id":1740584649170,"createdAt":"2025-02-26T15:44:09.170Z"},{"name":"macbook-pro","price":2000,"id":1740584801884,"createdAt":"2025-02-26T15:46:41.884Z"},{"name":"macbook pro","price":2000,"slug":"macbook-pro","id":1740749827126,"createdAt":"2025-02-28T13:37:07.126Z"},{"name":"macbook pro 11","price":2000,"slug":"macbook-pro-11","id":1740750014362,"createdAt":"2025-02-28T13:40:14.362Z"}]
+[
+    {
+        "name": "test",
+        "price": 2000,
+        "id": 1740584158088,
+        "createdAt": "2025-02-26T15:35:58.088Z"
+    },
+    {
+        "name": "test111",
+        "price": 2000,
+        "id": 1740584478310,
+        "createdAt": "2025-02-26T15:41:18.310Z"
+    },
+    {
+        "name": "test1111",
+        "price": 2000,
+        "id": 1740584534347,
+        "createdAt": "2025-02-26T15:42:14.347Z"
+    },
+    {
+        "name": "test123321",
+        "price": 2000,
+        "id": 1740584649170,
+        "createdAt": "2025-02-26T15:44:09.170Z"
+    },
+    {
+        "name": "macbook-pro",
+        "price": 2000,
+        "id": 1740584801884,
+        "createdAt": "2025-02-26T15:46:41.884Z"
+    },
+    {
+        "name": "macbook pro",
+        "price": 2000,
+        "slug": "macbook-pro",
+        "id": 1740749827126,
+        "createdAt": "2025-02-28T13:37:07.126Z"
+    },
+    {
+        "name": "macbook pro 11",
+        "price": 2000,
+        "slug": "macbook-pro-11",
+        "id": 1740750014362,
+        "createdAt": "2025-02-28T13:40:14.362Z"
+    }
+]

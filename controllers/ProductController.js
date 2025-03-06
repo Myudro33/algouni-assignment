@@ -1,23 +1,24 @@
 import fs from 'fs'
+import Product from '../models/Product.js';
 
 
 const data = JSON.parse(fs.readFileSync('./data/data.json'));
 
 
-
-const getProducts  = (req,res)=>{
-    res.json(data)  
+const getProducts  = async (req,res)=>{
+    const product = await Product.find({})
+    res.json({data:product})
     }
-const createProduct = (req,res)=>{
-    if(!req.body.name||!req.body.price){
+const createProduct = async (req,res)=>{
+    if(!req.body.name||!req.body.price||!req.body.stock||!req.body.description){
     res.send('name and price are required!');
     }else{
         if(!data.some(e=>e.name===req.body.name)){
-            const newProduct = {...req.body,id:Date.now(),createdAt:new Date().toISOString()}
-            data.push(newProduct)
-            fs.writeFileSync('./data/data.json',JSON.stringify(data))
+            const newProduct = new Product({...req.body,id:Date.now(),createdAt:new Date().toISOString()})
+            await newProduct.save()
             res.json({
                 message:"new product is created",
+                data:newProduct
             })
         }else{
             res.json({
