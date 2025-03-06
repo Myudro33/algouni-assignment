@@ -1,8 +1,4 @@
-import fs from "fs";
 import Product from "../models/Product.js";
-import mongoose from "mongoose";
-
-const data = JSON.parse(fs.readFileSync("./data/data.json"));
 
 const getProducts = async (req, res) => {
   const product = await Product.find({});
