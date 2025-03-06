@@ -1,5 +1,6 @@
 import fs from "fs";
 import Product from "../models/Product.js";
+import mongoose from "mongoose";
 
 const data = JSON.parse(fs.readFileSync("./data/data.json"));
 
@@ -29,17 +30,24 @@ const createProduct = async (req, res) => {
       data: newProduct,
     });
 };
-const updateProduct = (req, res) => {
-  const productIndex = data.findIndex(
-    (item) => item.id === parseInt(req.params.id)
-  );
-  const newProduct = { ...data[productIndex], ...req.body };
-  data[productIndex] = newProduct;
-  fs.writeFileSync("./data/data.json", JSON.stringify(data));
-  res.json({
-    message: "Product updated",
-    data: data[productIndex],
-  });
+const updateProduct = async(req, res) => {
+    try{
+        const { id } = req.params;
+        const { name, price, description } = req.body;
+        const existingProduct = await Product.findById(id);
+        if (!existingProduct) {
+            return res.status(404).json({ message: "Product not found" });
+        }
+        const updatedProduct = await Product.findByIdAndUpdate(
+           id,
+            { name, price, description },
+            { new: true, runValidators: true }
+        );
+        res.status(200).json({ message: "Product updated successfully", data: updatedProduct });
+    }catch (error) {
+        res.status(500).json({ message: "Server error", error: error.message });
+    }
+ 
 };
 const deleteProduct = (req, res) => {
   const newProducts = data.filter(
