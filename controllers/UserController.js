@@ -1,8 +1,4 @@
-import fs from 'fs'
 import User from '../models/User.js';
-
-const data = JSON.parse(fs.readFileSync('./data/users.json'));
-
 
 const getUsers = async(req,res)=>{
     const users = await User.find({});
@@ -36,12 +32,18 @@ const editUser =async (req,res)=>{
     const user = await User.findByIdAndUpdate(req.params.id,{...req.body},{new:true})
     res.json({message:"User updated",data:user})
 }
-const deleteUser = (req,res)=>{
-    const filteredUser = data.filter(user=>user.id!==parseInt(req.params.id))
-    fs.writeFileSync('./data/users.json',JSON.stringify(filteredUser))
-    res.json({
-        message:"user deleted",
-    })
+const deleteUser = async(req,res)=>{
+    const existingUser = User.findById(req.params.id)
+    try {
+        if(!existingUser){
+            return res.status(400).json({message:"User doesn't exist"})
+        }
+        await User.findByIdAndDelete(req.params.id)
+        res.json({message:"User deleted"})
+    } catch (error) {
+        return res.status(500).json({message:"Server error",error:error.message})
+        
+    }
 }
 
 export {createUser,deleteUser,editUser,getUsers}
