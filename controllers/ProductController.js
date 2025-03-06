@@ -49,14 +49,14 @@ const updateProduct = async(req, res) => {
     }
  
 };
-const deleteProduct = (req, res) => {
-  const newProducts = data.filter(
-    (product) => product.id !== parseInt(req.params.id)
-  );
-  fs.writeFileSync("./data/data.json", JSON.stringify(newProducts));
-  res.json({
-    message: "Product is deleted successfully",
-  });
+const deleteProduct =async(req, res) => {
+    try{
+        await Product.findOneAndDelete(req.params.id)
+        res.json({message:'Product deleted successfully'})
+    }
+    catch(err){
+        res.status(500).json({message:'server error',error:err.message})
+    }
 };
 const buyProduct = (req, res) => {
   const productId = parseInt(req.params.id);
