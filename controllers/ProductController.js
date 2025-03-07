@@ -1,17 +1,24 @@
 import Product from "../models/Product.js";
 
 const getProducts = async (req, res) => {
-  const excludeFields = ["sort"];
+  const excludeFields = ["sort", "fields", "page", "limit"];
   const queryObj = { ...req.query };
   try {
     let query = Product.find();
+
     excludeFields.forEach((el) => delete queryObj[el]);
     query = query.find(queryObj);
     if (req.query.sort) query = query.sort(req.query.sort);
+    if (req.query.fields)
+      query = query.select(req.query.fields.split(",").join(" "));
+    const page = req.query.page * 1 || 1;
+    const limit = req.query.limit * 1 || 100;
+    const skip = (page - 1) * limit;
+    query = query.skip(skip).limit(limit);
     const product = await query;
     res.json({ data: product });
   } catch (error) {
-    res.json({message:"server error",error:error.message})
+    res.json({ message: "server error", error: error.message });
   }
 };
 const createProduct = async (req, res) => {
@@ -78,12 +85,10 @@ const buyProduct = async (req, res) => {
       { $inc: { stock: -1 } },
       { new: true }
     );
-    res
-      .status(200)
-      .json({
-        message: "You bought this product successfully",
-        data: updatedProduct,
-      });
+    res.status(200).json({
+      message: "You bought this product successfully",
+      data: updatedProduct,
+    });
   } catch (err) {
     res.status(500).json({ message: "server error", error: err.message });
   }
