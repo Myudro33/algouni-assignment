@@ -1,4 +1,5 @@
 import mongoose from "mongoose"
+import StockHistory from "./StockHistory.js"
 
 const productSchema= new mongoose.Schema({
     id:{type:Number,required:true,unique:true},
@@ -45,5 +46,24 @@ productSchema.virtual('capacity').get(function(){
 productSchema.statics.deleteOne = async function (filter) {
     return this.updateOne(filter, { archived: true });
   };
+
+productSchema.pre("findOneAndUpdate", async function (next) {
+    const updatedProduct = await this.model.findOne(this.getQuery());
+    const newStock = this.getUpdate().stock; 
+    
+    if (updatedProduct && newStock !== undefined && updatedProduct.stock !== newStock) {
+      await StockHistory.create({
+        productId: updatedProduct._id,
+        oldStock: updatedProduct.stock,
+        newStock: newStock
+      });
+      console.log("Stock change logged:", {
+        productId: updatedProduct._id,
+        oldStock: updatedProduct.stock,
+        newStock: newStock
+      });
+    }
+    next();
+  });
 
 export default mongoose.model('Product',productSchema)

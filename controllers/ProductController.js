@@ -35,16 +35,15 @@ const createProduct = async (req, res) => {
 const updateProduct = async (req, res) => {
   try {
     const { id } = req.params;
-    const { name, price, description } = req.body;
-    const existingProduct = await Product.findById(id);
-    if (!existingProduct) {
-      return res.status(404).json({ message: "Product not found" });
-    }
+    const { name, price, description,stock } = req.body;
     const updatedProduct = await Product.findByIdAndUpdate(
       id,
-      { name, price, description },
+      { name, price, description,stock },
       { new: true, runValidators: true }
     );
+    if (!updateProduct) {
+      return res.status(404).json({ message: "Product not found" });
+    }
     res
       .status(200)
       .json({ message: "Product updated successfully", data: updatedProduct });
