@@ -54,14 +54,14 @@ const updateProduct = async (req, res) => {
 };
 const deleteProduct = async (req, res) => {
   try {
-   const product = await Product.findOneAndDelete({id:parseInt(req.params.id)});
+   const product = await Product.deleteOne({id:parseInt(req.params.id)});
    if(!product){
     res.status(404).json({message:"product not found"})
    }
   } catch (err) {
     res.status(500).json({ message: "server error", error: err.message });
   }
-  res.json({ message: "Product deleted successfully" });
+  res.json({ message: "Product archived successfully" });
 };
 const buyProduct = async (req, res) => {
   try {

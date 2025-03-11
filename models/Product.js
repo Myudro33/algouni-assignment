@@ -7,8 +7,8 @@ const productSchema= new mongoose.Schema({
     description:{type:String,required:true},
     stock:{type:Number,required:true},
     slug:{type:String},
-    createdAt:{type:Date,default:Date.now}
-
+    createdAt:{type:Date,default:Date.now},
+    archived:{type:Boolean,default:false}
 }
 ,
 {
@@ -41,5 +41,9 @@ productSchema.virtual('priceWithTax').get(function(){
 productSchema.virtual('capacity').get(function(){
     return this.price*this.stock
 })
+
+productSchema.statics.deleteOne = async function (filter) {
+    return this.updateOne(filter, { archived: true });
+  };
 
 export default mongoose.model('Product',productSchema)
