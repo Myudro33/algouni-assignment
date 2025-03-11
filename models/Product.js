@@ -38,5 +38,8 @@ productSchema.virtual('priceWithTax').get(function(){
     return this.price+(this.price*0.20)
 })
 
+productSchema.virtual('capacity').get(function(){
+    return this.price*this.stock
+})
 
 export default mongoose.model('Product',productSchema)
