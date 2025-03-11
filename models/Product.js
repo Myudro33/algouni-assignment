@@ -19,5 +19,10 @@ productSchema.pre('findOneAndDelete',async function(next){
     
 })
 
+productSchema.post('save',function(doc){
+    console.log('product saved',doc);
+    
+})
+
 
 export default mongoose.model('Product',productSchema)
