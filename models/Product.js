@@ -34,5 +34,9 @@ productSchema.virtual('status').get(function(){
     return this.stock>0?'Avaliable':"Not Avaliable"
 })
 
+productSchema.virtual('priceWithTax').get(function(){
+    return this.price+(this.price*0.20)
+})
+
 
 export default mongoose.model('Product',productSchema)
