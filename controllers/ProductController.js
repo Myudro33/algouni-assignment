@@ -114,6 +114,9 @@ const getPriceRangeStats= async (req,res)=>{
           boundaries: [200, 800, 1200, 1800],
           output: {
             count: { $sum: 1 },
+            avgPrice: { $avg: "$price" },
+            minPrice: { $min: "$price" },
+            maxPrice: { $max: "$price" },
             products: { $push: "$$ROOT" }
           }
         }
