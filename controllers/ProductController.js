@@ -102,4 +102,42 @@ const getCategoryStats = async(req,res)=>{
  return res.json(stats)
 }
 
-export { getProducts, buyProduct, createProduct, deleteProduct, updateProduct,getCategoryStats };
+const getPriceRangeStats= async (req,res)=>{
+  try {
+    const products = await Product.aggregate([
+      {
+        $match: { archived: false }
+      },
+      {
+        $bucket: {
+          groupBy: "$price",
+          boundaries: [200, 800, 1200, 1800],
+          output: {
+            count: { $sum: 1 },
+            products: { $push: "$$ROOT" }
+          }
+        }
+      },
+      {
+        $addFields: {
+          _id: {
+            $switch: {
+              branches: [
+                { case: { $eq: ["$_id", 200] }, then: "200-800" },
+                { case: { $eq: ["$_id", 800] }, then: "800-1200" },
+                { case: { $eq: ["$_id", 1200] }, then: "1200-1800" },
+                { case: { $eq: ["$_id", 1800] }, then: "1200-inf" }
+              ],
+              default: "Other"
+            }
+          }
+        }
+      }
+    ]);
+
+    res.json({data:products,message:'product aggregations'})
+  } catch (error) {
+    res.status(500).json({message:'server error',error:error.message})
+  }
+}
+export { getProducts, buyProduct, createProduct, deleteProduct, updateProduct,getCategoryStats,getPriceRangeStats };
