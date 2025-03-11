@@ -83,4 +83,20 @@ const buyProduct = async (req, res) => {
   }
 };
 
-export { getProducts, buyProduct, createProduct, deleteProduct, updateProduct };
+const getCategoryStats = async(req,res)=>{
+  const stats = await Product.aggregate([
+    {
+      $group:{
+        _id:"$category",
+        numProducts:{$sum:1},
+        avgPrice:{$avg:"$price"},
+        minPrice:{$min:"$price"},
+        maxPrice:{$max:"$price"}
+      }
+    },
+    {$sort:{avgPrice:1}}
+  ])
+ return res.json(stats)
+}
+
+export { getProducts, buyProduct, createProduct, deleteProduct, updateProduct,getCategoryStats };
