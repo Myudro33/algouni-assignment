@@ -1,20 +1,9 @@
 import Product from "../models/Product.js";
+import filterService from "../services/filterService.js";
 
 const getProducts = async (req, res) => {
-  const excludeFields = ["sort", "fields", "page", "limit"];
-  const queryObj = { ...req.query };
+  const query = filterService(Product.find(),req.query)
   try {
-    let query = Product.find();
-
-    excludeFields.forEach((el) => delete queryObj[el]);
-    query = query.find(queryObj);
-    if (req.query.sort) query = query.sort(req.query.sort);
-    if (req.query.fields)
-      query = query.select(req.query.fields.split(",").join(" "));
-    const page = req.query.page * 1 || 1;
-    const limit = req.query.limit * 1 || 100;
-    const skip = (page - 1) * limit;
-    query = query.skip(skip).limit(limit);
     const product = await query;
     res.json({ data: product });
   } catch (error) {
