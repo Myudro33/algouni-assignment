@@ -10,5 +10,14 @@ const productSchema= new mongoose.Schema({
     createdAt:{type:Date,default:Date.now}
 
 })
+productSchema.pre('findOneAndDelete',async function(next){
+    const product = await this.model.findOne(this.getQuery())
+    if(product.stock>0){
+      return next(new Error('Product cant be deleted'))
+    }
+    next()
+    
+})
+
 
 export default mongoose.model('Product',productSchema)
