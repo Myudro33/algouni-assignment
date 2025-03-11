@@ -9,7 +9,13 @@ const productSchema= new mongoose.Schema({
     slug:{type:String},
     createdAt:{type:Date,default:Date.now}
 
-})
+}
+,
+{
+    toJSON:{virtuals:true},
+    toObject:{virtuals:true}
+},
+)
 productSchema.pre('findOneAndDelete',async function(next){
     const product = await this.model.findOne(this.getQuery())
     if(product.stock>0){
@@ -22,6 +28,10 @@ productSchema.pre('findOneAndDelete',async function(next){
 productSchema.post('save',function(doc){
     console.log('product saved',doc);
     
+})
+
+productSchema.virtual('status').get(function(){
+    return this.stock>0?'Avaliable':"Not Avaliable"
 })
 
 
